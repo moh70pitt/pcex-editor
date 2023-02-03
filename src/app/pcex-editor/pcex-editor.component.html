@@ -1,1 +1,10 @@
-<ngx-monaco-editor [options]="options" [(ngModel)]="code"></ngx-monaco-editor>
+<div class="p-4 grid gap-4 grid-cols-2">
+    <div class="flex flex-col">
+        <span class="text-xl font-bold pb-2">Source Code</span>
+        <ngx-monaco-editor [options]="options" [(ngModel)]="code" class="flex-grow"></ngx-monaco-editor>
+    </div>
+
+    <div class="flex flex-col">
+        <span class="text-xl font-bold pb-2">Annotations</span>
+    </div>
+</div>
