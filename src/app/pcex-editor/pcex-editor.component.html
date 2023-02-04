@@ -1,10 +1,75 @@
-<div class="p-4 grid gap-4 grid-cols-2">
-    <div class="flex flex-col">
-        <span class="text-xl font-bold pb-2">Source Code</span>
-        <ngx-monaco-editor [options]="options" [(ngModel)]="code" class="flex-grow"></ngx-monaco-editor>
-    </div>
+<div class="container mx-auto my-24">
+    <div class="flex flex-col p-4 gap-4">
+        <h1 class="text-2xl bold">PCEX Editor</h1>
 
-    <div class="flex flex-col">
-        <span class="text-xl font-bold pb-2">Annotations</span>
+        <hr />
+
+        <div class="flex flex-col gap-2">
+            <input type="text" pInputText [(ngModel)]="model.name" placeholder="Name" class="text-xl" />
+            <textarea pInputTextarea [(ngModel)]="model.description" [autoResize]="true" placeholder="Description"
+                class="p-inputtext-sm">
+        </textarea>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <span (click)="tt['distractors'] = !tt['distractors']" class="text-xl font-bold flex-grow cursor-pointer">
+                <span>Distractors ({{ model.distractors.length }})</span>
+                <i [class]="'mx-2 text-blue-500 pi pi-chevron-' + (tt['distractors'] ? 'down' : 'up')"></i>
+            </span>
+            <button pButton type="button" icon="pi pi-plus" class="p-button-rounded p-button-text"
+                (click)="addDistractor()"></button>
+        </div>
+
+        <div *ngIf="!tt['distractors']" class="flex flex-col gap-1">
+            <div *ngIf="model.distractors.length < 1" class="flex gap-2 p-2 border rounded-md">
+                <span class="mx-auto">
+                    Use the <i class="pi pi-plus text-blue-500 mx-2 cursor-pointer" (click)="addDistractor()"></i>
+                    button to add a distractor.
+                </span>
+            </div>
+            <div *ngFor="let distractor of model.distractors; let i = index" class="flex items-start gap-2">
+                <i class="pi pi-times text-red-600 hover:bg-red-100 w-4 h-4 rounded-full text-xs cursor-pointer"
+                    style="margin-top: 0.15rem; padding-left: 0.125rem;" (click)="delDistractor(distractor)">
+                </i>
+                <span class="w-4 text-right text-sm">
+                    {{ i + 1 }}.
+                </span>
+                <div class="flex flex-col flex-grow p-1 border rounded-md">
+                    <ngx-monaco-editor [(ngModel)]="distractor.code" [options]="options_l1"
+                        (onInit)="setupDistractorEditor($event)" style="height: 1.15rem; border: none;">
+                    </ngx-monaco-editor>
+                    <textarea pInputTextarea [autoResize]="true" [(ngModel)]="distractor.description"
+                        placeholder="Description" rows="1" class="text-xs border-t"
+                        style="border-bottom: none; border-left: none; border-right: none; border-radius: 0; padding: 0.125rem 0.25rem;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+            <div class="flex flex-col gap-4">
+                <span class="text-xl font-bold">Source Code</span>
+                <ngx-monaco-editor [(ngModel)]="model.code" [options]="options" (onInit)="setupSourceEditor($event)"
+                    class="flex-grow border px-1 rounded-md">
+                </ngx-monaco-editor>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <span class="text-xl font-bold">
+                    Line Annotation
+                </span>
+                <p-checkbox name="groupname" [binary]="true" label="Is a blank line" [(ngModel)]="line.blank"
+                    [disabled]="!selectedLine" (onChange)="reloadDecorations()"></p-checkbox>
+
+                <textarea pInputTextarea [(ngModel)]="line.comment" [disabled]="!selectedLine" rows="7"
+                    placeholder="Comment" class="p-inputtext-sm" (ngModelChange)="reloadDecorations()">
+                </textarea>
+            </div>
+        </div>
+
+        <hr />
+
+        <span class="text-xl font-bold">JSON Representation</span>
+        <ngx-monaco-editor [ngModel]="model | json" [options]="options_vw" class="flex-grow border px-1 rounded-md">
+        </ngx-monaco-editor>
     </div>
 </div>
