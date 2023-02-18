@@ -12,16 +12,17 @@
 
                 <span class="flex-grow"></span>
 
-                <button pButton type="submit" label="Update" icon="pi pi-check" class="p-button-sm"
-                    [disabled]="form.invalid"></button>
+                <button pButton type="submit" label="Update" icon="pi pi-check" class="p-button-sm -my-2"
+                    [disabled]="form.invalid">
+                </button>
             </div>
         </div>
 
         <div class="container mx-auto my-10">
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-2">
-                    <input type="text" name="name" pInputText [(ngModel)]="model.name" placeholder="Name" required
-                        class="text-xl" />
+                    <input type="text" name="name" pInputText [(ngModel)]="model.name" (ngModelChange)="updateTitle()"
+                        placeholder="Name" required class="text-xl" />
                     <textarea pInputTextarea name="description" [(ngModel)]="model.description" [autoResize]="true"
                         placeholder="Description" class="p-inputtext-sm">
                     </textarea>
@@ -29,8 +30,19 @@
 
                 <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
                     <div class="flex flex-col gap-4">
-                        <span class="text-xl font-bold">Source Code</span>
-                        <ngx-monaco-editor name="code" [(ngModel)]="model.code" [options]="options"
+                        <span class="flex items-center">
+                            <span class="text-xl font-bold flex-grow">
+                                Source Code
+                            </span>
+
+                            <p-dropdown name="language" [(ngModel)]="model.language" [options]="[
+                                    { label: 'Java', value: 'java'}, 
+                                    { label: 'Javascript', value: 'javascript' },
+                                    { label: 'Python', value: 'python' },
+                                ]" styleClass="px-0 py-0 p-inputtext-sm" (onChange)="changeLang($event)">
+                            </p-dropdown>
+                        </span>
+                        <ngx-monaco-editor *ngIf="langSet" name="code" [(ngModel)]="model.code" [options]="srcEditorOptions"
                             (onInit)="setupSourceEditor($event)" required class="flex-grow border px-1 rounded-md">
                         </ngx-monaco-editor>
                     </div>
@@ -117,8 +129,8 @@
                             {{ i + 1 }}.
                         </span>
                         <div class="flex flex-col flex-grow p-1 border rounded-md">
-                            <ngx-monaco-editor [name]="'distractor-' + i" [(ngModel)]="distractor.code"
-                                [options]="options_l1" (onInit)="setupDistractorEditor($event)"
+                            <ngx-monaco-editor *ngIf="langSet" [name]="'distractor-' + i" [(ngModel)]="distractor.code"
+                                [options]="distEditorOptions" (onInit)="setupDistractorEditor($event)"
                                 style="height: 1.15rem; border: none;">
                             </ngx-monaco-editor>
                             <textarea pInputTextarea [autoResize]="true" [name]="'dist-description-' + i"
@@ -132,12 +144,14 @@
                     </div>
                 </div>
 
+                <!-- 
                 <hr />
 
                 <span class="text-xl font-bold">JSON Representation</span>
-                <ngx-monaco-editor name="json" [ngModel]="model | json" [options]="options_vw"
+                <ngx-monaco-editor name="json" [ngModel]="model | json" [options]="jsonViewerOptions"
                     class="flex-grow border px-1 rounded-md" style="height: 30rem;">
-                </ngx-monaco-editor>
+                </ngx-monaco-editor> 
+                -->
             </div>
         </div>
     </form>

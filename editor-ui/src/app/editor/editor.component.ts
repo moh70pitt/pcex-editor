@@ -1,5 +1,6 @@
-import { Component, Input, NgZone, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Component, Input, NgZone, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 import { KeyCode, KeyMod, Range, } from 'monaco-editor';
 import { SourcesService } from '../sources.service';
 
@@ -12,7 +13,7 @@ export class EditorComponent implements OnInit {
 
   @Input() language = 'java';
 
-  options = {
+  srcEditorOptions = {
     language: this.language,
     theme: 'vs', // vs-dark
     minimap: { enabled: false },
@@ -22,8 +23,8 @@ export class EditorComponent implements OnInit {
     trimAutoWhitespace: false,
   };
 
-  options_l1 = {
-    ...this.options,
+  distEditorOptions = {
+    ...this.srcEditorOptions,
     lineNumbers: 'off',
     lineNumbersMinChars: 0,
     lineDecorationsWidth: 0,
@@ -31,34 +32,44 @@ export class EditorComponent implements OnInit {
     renderLineHighlight: "none"
   };
 
-  options_vw = {
-    ...this.options,
+  jsonViewerOptions = {
+    ...this.srcEditorOptions,
     readOnly: true,
   };
-
-  tt: any = {} // ui toggles
 
   model: any;
 
   editor: any;
   selectedLineNum: any;
   selectedLine: any;
-
   decorations: any[] = [];
+
+  tt: any = {} // ui toggles
+
+  langSet = true;
 
   constructor(
     private ngZone: NgZone,
     private api: SourcesService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private title: Title,
   ) { }
 
   ngOnInit(): void {
     const params: any = this.route.snapshot.params;
     this.api.read(params.id).subscribe(
-      (source: any) => this.model = source,
+      (source: any) => {
+        this.srcEditorOptions.language = source.language;
+        this.model = source;
+        this.updateTitle();
+      },
       (error: any) => console.log(error)
     );
+  }
+
+  updateTitle() {
+    this.title.setTitle('PCEX Authoring: ' + this.model.name);
   }
 
   setupDistractorEditor(monaco: any) {
@@ -177,5 +188,14 @@ export class EditorComponent implements OnInit {
       (source: any) => this.router.navigate(['/dashboard']),
       (error: any) => console.log(error)
     )
+  }
+
+  changeLang($event: any) {
+    this.srcEditorOptions.language = $event.value;
+    this.distEditorOptions.language = $event.value;
+    this.jsonViewerOptions.language = $event.value;
+
+    this.langSet = false;
+    setTimeout(() => this.langSet = true, 0);
   }
 }

@@ -19,7 +19,7 @@
     <ng-template pTemplate="body" let-source>
         <tr>
             <td>
-                <div class="flex">
+                <div class="flex w-full">
                     <div class="flex flex-col flex-grow">
                         <span [routerLink]="['/editor', source.id]" class="font-bold cursor-pointer text-blue-700">
                             {{source.name || '[name not set]'}}

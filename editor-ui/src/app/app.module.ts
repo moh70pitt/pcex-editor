@@ -18,6 +18,7 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AccordionModule } from 'primeng/accordion';
 import { TableModule } from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -48,6 +49,7 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     RouterModule,
     CheckboxModule,
+    DropdownModule
   ],
   providers: [SourcesService],
   bootstrap: [AppComponent]
