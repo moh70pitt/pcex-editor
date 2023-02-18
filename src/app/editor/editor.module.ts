@@ -8,20 +8,20 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 
-import { PcexEditorRoutingModule } from './pcex-editor.routing';
-import { PcexEditorComponent } from './pcex-editor.component';
+import { EditorRoutingModule } from './editor.routing';
+import { EditorComponent } from './editor.component';
 
 @NgModule({
   declarations: [
-    PcexEditorComponent
+    EditorComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     MonacoEditorModule.forRoot(),
-    PcexEditorRoutingModule,
+    EditorRoutingModule,
     InputTextModule, InputTextareaModule,
     ButtonModule, CheckboxModule,
   ]
 })
-export class PcexEditorModule { }
+export class EditorModule { }

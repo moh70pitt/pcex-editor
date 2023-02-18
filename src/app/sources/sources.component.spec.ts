@@ -1,18 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PcexEditorComponent } from './pcex-editor.component';
+import { SourcesComponent } from './sources.component';
 
-describe('PcexEditorComponent', () => {
-  let component: PcexEditorComponent;
-  let fixture: ComponentFixture<PcexEditorComponent>;
+describe('SourcesComponent', () => {
+  let component: SourcesComponent;
+  let fixture: ComponentFixture<SourcesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PcexEditorComponent ]
+      declarations: [ SourcesComponent ]
     })
     .compileComponents();
+  });
 
-    fixture = TestBed.createComponent(PcexEditorComponent);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SourcesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

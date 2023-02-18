@@ -1,13 +1,12 @@
 import { Component, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { KeyCode, KeyMod, Range, } from 'monaco-editor';
-import { EditorComponent } from 'ngx-monaco-editor';
 
 @Component({
-  selector: 'app-pcex-editor',
-  templateUrl: './pcex-editor.component.html',
-  styleUrls: ['./pcex-editor.component.less']
+  selector: 'app-editor',
+  templateUrl: './editor.component.html',
+  styleUrls: ['./editor.component.less']
 })
-export class PcexEditorComponent implements OnInit {
+export class EditorComponent implements OnInit {
 
   @Input() language = 'java';
 
