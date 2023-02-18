@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivitiesService } from '../activities.service';
+import { SourcesService } from '../sources.service';
 
 @Component({
   selector: 'app-activities',
@@ -7,9 +9,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ActivitiesComponent implements OnInit {
 
-  constructor() { }
+  create = true;
+  activities: any;
+  activity: any;
+
+  constructor(
+    private api: ActivitiesService
+  ) { }
 
   ngOnInit(): void {
+    this.reload();
   }
 
+  filter(table: any, $event: any) {
+    table.filterGlobal($event.target.value, 'contains');
+  }
+
+  reload() {
+    this.create = false;
+    this.api.activities().subscribe(
+      (activities: any) => this.activities = activities,
+      (error: any) => console.log(error)
+    );
+  }
+
+  remove(activity: any) {
+    if (confirm('Deleting Activity! Are you sure?')) {
+      this.api.remove(activity.id).subscribe(
+        (activity: any) => this.reload(),
+        (error: any) => console.log(error)
+      )
+    }
+  }
 }

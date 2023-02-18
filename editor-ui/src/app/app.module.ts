@@ -23,14 +23,19 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FormsModule } from '@angular/forms';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ActivityComponent } from './activity/activity.component';
+import { ActivitiesService } from './activities.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     SourcesComponent,
+    EditorComponent,
     ActivitiesComponent,
-    EditorComponent
+    ActivityComponent
   ],
   imports: [
     BrowserModule,
@@ -49,9 +54,11 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     RouterModule,
     CheckboxModule,
-    DropdownModule
+    DropdownModule,
+    SelectButtonModule,
+    AutoCompleteModule,
   ],
-  providers: [SourcesService],
+  providers: [SourcesService, ActivitiesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

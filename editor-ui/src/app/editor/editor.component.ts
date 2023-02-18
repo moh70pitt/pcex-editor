@@ -97,15 +97,12 @@ export class EditorComponent implements OnInit {
     this.editor = monaco;
 
     this.editor.onDidChangeCursorPosition((e: any) => {
-      console.log('onDidChangeCursorPosition');
       this.ngZone.run(() => this.selectLineNum(e.position.lineNumber))
     });
     // this.editor.onDidBlurEditorText((e: any) => {
-    //   console.log('onDidBlurEditorWidget');
     //   this.ngZone.run(() => this.ignoreUntouchedLines())
     // });
     // this.editor.onDidFocusEditorText((e: any) => (e: any) => {
-    //   console.log('onDidFocusEditorWidget');
     //   this.ngZone.run(() => this.selectLineNum(this.editor.getPosition().lineNumber))
     // });
   }
@@ -182,9 +179,13 @@ export class EditorComponent implements OnInit {
     this.selectedLine.comments.splice(this.selectedLine.comments.indexOf(comment), 1);
   }
 
+  back() {
+    this.router.navigate(['/dashboard']);
+  }
+
   update() {
     this.ignoreUntouchedLines();
-    this.api.update(this.route.snapshot.params.id, this.model).subscribe(
+    this.api.update(this.model).subscribe(
       (source: any) => this.router.navigate(['/dashboard']),
       (error: any) => console.log(error)
     )

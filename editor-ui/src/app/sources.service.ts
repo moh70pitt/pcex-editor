@@ -8,26 +8,26 @@ import { environment } from 'src/environments/environment';
 export class SourcesService {
 
   constructor(
-    private httpClient: HttpClient
+    private http: HttpClient
   ) { }
 
   sources() {
-    return this.httpClient.get(`${environment.apiUrl}/sources`);
+    return this.http.get(`${environment.apiUrl}/sources`);
   }
 
   create() {
-    return this.httpClient.post(`${environment.apiUrl}/sources`, {});
+    return this.http.post(`${environment.apiUrl}/sources`, {});
   }
 
   read(id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/sources/${id}`);
+    return this.http.get(`${environment.apiUrl}/sources/${id}`);
   }
 
-  update(id: string, source: any) {
-    return this.httpClient.patch(`${environment.apiUrl}/sources/${id}`, source);
+  update(source: any) {
+    return this.http.patch(`${environment.apiUrl}/sources/${source.id}`, source);
   }
 
   remove(id: string) {
-    return this.httpClient.delete(`${environment.apiUrl}/sources/${id}`);
+    return this.http.delete(`${environment.apiUrl}/sources/${id}`);
   }
 }

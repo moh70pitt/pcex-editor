@@ -8,11 +8,15 @@
     <div class="container mx-auto my-10">
         <div class="flex items-center justify-center gap-4">
             <p-accordion class="w-full">
-                <p-accordionTab header="Activities">
-                    <app-activities></app-activities>
+                <p-accordionTab header="Activities" [selected]="true">
+                    <div class="-m-4">
+                        <app-activities></app-activities>
+                    </div>
                 </p-accordionTab>
-                <p-accordionTab header="Source Codes" [selected]="true">
-                    <app-sources></app-sources>
+                <p-accordionTab header="Source Codes">
+                    <div class="-m-4">
+                        <app-sources></app-sources>
+                    </div>
                 </p-accordionTab>
             </p-accordion>
         </div>

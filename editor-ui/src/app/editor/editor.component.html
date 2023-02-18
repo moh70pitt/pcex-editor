@@ -12,9 +12,14 @@
 
                 <span class="flex-grow"></span>
 
-                <button pButton type="submit" label="Update" icon="pi pi-check" class="p-button-sm -my-2"
-                    [disabled]="form.invalid">
-                </button>
+                <div class="flex items-center gap-2">
+                    <button pButton type="button" label="Cancel" icon="pi pi-chevron-left"
+                        class="p-button-sm p-button-secondary p-button-text -my-2" (click)="back()">
+                    </button>
+                    <button pButton type="submit" label="Update" icon="pi pi-check" class="p-button-sm -my-2"
+                        [disabled]="form.invalid">
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -37,13 +42,13 @@
 
                             <p-dropdown name="language" [(ngModel)]="model.language" [options]="[
                                     { label: 'Java', value: 'java'}, 
-                                    { label: 'Javascript', value: 'javascript' },
                                     { label: 'Python', value: 'python' },
                                 ]" styleClass="px-0 py-0 p-inputtext-sm" (onChange)="changeLang($event)">
                             </p-dropdown>
                         </span>
-                        <ngx-monaco-editor *ngIf="langSet" name="code" [(ngModel)]="model.code" [options]="srcEditorOptions"
-                            (onInit)="setupSourceEditor($event)" required class="flex-grow border px-1 rounded-md">
+                        <ngx-monaco-editor *ngIf="langSet" name="code" [(ngModel)]="model.code"
+                            [options]="srcEditorOptions" (onInit)="setupSourceEditor($event)" required
+                            class="flex-grow border px-1 rounded-md">
                         </ngx-monaco-editor>
                     </div>
 

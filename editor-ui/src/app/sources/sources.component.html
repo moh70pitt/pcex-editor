@@ -1,4 +1,4 @@
-<p-table #table [value]="sources" [globalFilterFields]="['title','description']">
+<p-table #table [value]="sources" [globalFilterFields]="['name','description']">
     <ng-template pTemplate="caption">
         <div class="flex items-center">
             <button pButton type="button" label="New Source Code" icon="pi pi-plus" class="p-button-sm"
@@ -13,13 +13,15 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th>Name / Description</th>
+            <th class="text-2xl">
+                Name / Description
+            </th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-source>
         <tr>
             <td>
-                <div class="flex w-full">
+                <div class="flex w-full pl-4">
                     <div class="flex flex-col flex-grow">
                         <span [routerLink]="['/editor', source.id]" class="font-bold cursor-pointer text-blue-700">
                             {{source.name || '[name not set]'}}

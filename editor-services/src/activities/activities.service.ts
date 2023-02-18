@@ -2,17 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
     existsSync, ensureDirSync, readdirSync,
-    readJsonSync, removeSync, writeJsonSync
+    removeSync, writeJsonSync, readJsonSync,
 } from 'fs-extra';
 
 @Injectable()
-export class SourcesService {
+export class ActivitiesService {
     constructor(private config: ConfigService) {
         ensureDirSync(this.root);
     }
 
     get root() {
-        return this.config.get('STORAGE') + '/sources';
+        return this.config.get('STORAGE') + '/activities';
     }
 
     list() {
