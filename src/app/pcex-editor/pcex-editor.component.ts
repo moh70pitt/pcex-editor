@@ -1,5 +1,5 @@
 import { Component, Input, NgZone, OnInit, ViewChild } from '@angular/core';
-import { KeyCode, KeyMod, Range } from 'monaco-editor';
+import { KeyCode, KeyMod, Range, } from 'monaco-editor';
 import { EditorComponent } from 'ngx-monaco-editor';
 
 @Component({
@@ -42,29 +42,20 @@ export class PcexEditorComponent implements OnInit {
     code: `public class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello PCEX Editor!!!");\n  }\n}`,
     name: 'Printing Table of Medal Winner Counts with Row Totals',
     description: 'Construct a program that prints a table of medal winner counts with row totals for a given array of countries and their medals won at the skating competitions at the Winter Olympic.',
+    programInput: '',
     distractors: [] as any[],
     lines: {} as any
   }
 
   editor: any;
+  selectedLineNum: any;
   selectedLine: any;
-
-  get line() {
-    if (this.selectedLine) {
-      if (!(this.selectedLine in this.model.lines))
-        this.model.lines[this.selectedLine] = {}
-
-      return this.model.lines[this.selectedLine];
-    }
-    return {};
-  }
 
   decorations: any[] = [];
 
   constructor(private ngZone: NgZone) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   setupDistractorEditor(monaco: any) {
     // --------------->>
@@ -92,28 +83,43 @@ export class PcexEditorComponent implements OnInit {
 
     this.editor.onDidChangeCursorPosition((e: any) => {
       this.ngZone.run(() => {
-        this.selectedLine = e.position.lineNumber;
+        this.selectedLineNum = e.position.lineNumber;
 
-        this.reloadDecorations();
+        if (this.selectedLineNum) {
+          // init line with defaults
+          if (!(this.selectedLineNum in this.model.lines)) {
+            this.model.lines[this.selectedLineNum] = { comments: [{}] }
+          }
+
+          this.selectedLine = this.model.lines[this.selectedLineNum];
+        } else {
+          this.selectedLine = {};
+        }
+
+        this.reloadLineMarkers();
       })
     });
   }
 
-  reloadDecorations() {
+  reloadLineMarkers() {
     this.editor.deltaDecorations(this.decorations, []);
     this.decorations = [];
 
-    const nums = Object.keys(this.model.lines).filter((num: any) => {
-      const line = this.model.lines[num];
-      return line.comment || line.blank;
+    const lineCount = this.model.code.split('\n').length;
+    const lineNums = Object.keys(this.model.lines).filter((lineNum: any) => {
+      const line = this.model.lines[lineNum];
+      return parseInt(lineNum) <= lineCount
+        && (line.blank || line.comments.filter(($: any) => $.content).length);
     });
 
     this.decorations = this.editor.deltaDecorations(
-      [], nums.map((num: any) => ({
-        range: new Range(parseInt(num), 1, parseInt(num), 1),
+      [], lineNums.map((lineNum: any) => ({
+        range: new Range(parseInt(lineNum), 1, parseInt(lineNum), 1000),
         options: {
+          isWholeLine: false,
           className: 'marked-line--background',
-          glyphMarginClassName: 'marked-line--glyph'
+          glyphMarginClassName: 'marked-line--glyph',
+          stickiness: 1,
         }
       })));
   }
@@ -122,8 +128,19 @@ export class PcexEditorComponent implements OnInit {
     this.model.distractors.push({ code: 'code here ...', description: '' });
   }
 
-  delDistractor(distractor: any) {
+  removeDistractor(distractor: any) {
     const i = this.model.distractors.indexOf(distractor);
     if (i > -1) this.model.distractors.splice(i, 1);
+  }
+
+  addLineComment() {
+    this.selectedLine.comments.push({});
+  }
+
+  removeLineComment(comment: any) {
+    this.selectedLine.comments.splice(this.selectedLine.comments.indexOf(comment), 1);
+  }
+
+  onCodeUpdate() {
   }
 }
