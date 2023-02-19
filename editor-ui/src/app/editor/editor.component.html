@@ -108,7 +108,7 @@
                 <div class="flex items-center gap-4">
                     <div class="flex flex-col">
                         <span (click)="tt['distractors'] = !tt['distractors']" class="text-xl font-bold cursor-pointer">
-                            <span>Distractors ({{ model.distractors?.length }})</span>
+                            <span>Distractors ({{ model.distractors?.length || 0 }})</span>
                             <i [class]="'mx-2 pi pi-chevron-' + (tt['distractors'] ? 'down' : 'up')"></i>
                         </span>
                         <span class="text-gray-400 text-xs">

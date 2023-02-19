@@ -18,8 +18,8 @@ export class ActivitiesController {
     }
 
     @Post()
-    create() {
-        const activity = { id: uuid4() };
+    create(@Body() attrs: any) {
+        const activity = { ...attrs, id: uuid4() };
         this.api.store(activity.id, activity);
         return activity;
     }
