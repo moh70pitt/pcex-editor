@@ -4,6 +4,7 @@ import {
     existsSync, ensureDirSync, readdirSync,
     removeSync, writeJsonSync, readJsonSync,
 } from 'fs-extra';
+import { validate as uuid4_validate } from 'uuid';
 
 @Injectable()
 export class ActivitiesService {
@@ -20,18 +21,22 @@ export class ActivitiesService {
     }
 
     store(id: string, content: any) {
-        writeJsonSync(this.root + '/' + id, content, { flag: 'w' });
+        if (uuid4_validate(id))
+            writeJsonSync(this.root + '/' + id, content, { flag: 'w' });
     }
 
     exists(id: string) {
-        return existsSync(this.root + '/' + id);
+        if (uuid4_validate(id))
+            return existsSync(this.root + '/' + id);
     }
 
     read(id: string) {
-        return readJsonSync(this.root + '/' + id);
+        if (uuid4_validate(id))
+            return readJsonSync(this.root + '/' + id);
     }
 
     remove(id: string) {
-        removeSync(this.root + '/' + id);
+        if (uuid4_validate(id))
+            removeSync(this.root + '/' + id);
     }
 }
