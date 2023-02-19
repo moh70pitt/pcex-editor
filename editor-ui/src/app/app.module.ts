@@ -27,6 +27,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ActivityComponent } from './activity/activity.component';
 import { ActivitiesService } from './activities.service';
+import { CompilerService } from './compiler.service';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,7 @@ import { ActivitiesService } from './activities.service';
     SelectButtonModule,
     AutoCompleteModule,
   ],
-  providers: [SourcesService, ActivitiesService],
+  providers: [SourcesService, ActivitiesService, CompilerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

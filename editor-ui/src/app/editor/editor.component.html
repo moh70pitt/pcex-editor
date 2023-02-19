@@ -40,11 +40,13 @@
                                 Source Code
                             </span>
 
-                            <p-dropdown name="language" [(ngModel)]="model.language" [options]="[
+                            <input type="text" name="filename" pInputText [(ngModel)]="model.filename"
+                                placeholder="File Name" class="p-inputtext-sm" required (blur)="changeLang()" />
+                            <!-- <p-dropdown name="language" [(ngModel)]="model.language" [options]="[
                                     { label: 'Java', value: 'java'}, 
                                     { label: 'Python', value: 'python' },
                                 ]" styleClass="px-0 py-0 p-inputtext-sm" (onChange)="changeLang($event)">
-                            </p-dropdown>
+                            </p-dropdown> -->
                         </span>
                         <ngx-monaco-editor *ngIf="langSet" name="code" [(ngModel)]="model.code"
                             [options]="srcEditorOptions" (onInit)="setupSourceEditor($event)" required

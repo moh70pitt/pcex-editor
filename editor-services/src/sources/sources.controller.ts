@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
-import { SourcesService } from './sources.service';
+import { SourcesService } from '../sources-service/sources.service';
 import { v4 as uuid4 } from 'uuid';
 
 @Controller('sources')
@@ -24,7 +24,7 @@ export class SourcesController {
     @Post()
     create() {
         const source = { id: uuid4() };
-        this.api.store(source.id, source);
+        this.api.write(source.id, source);
         return source;
     }
 
@@ -41,7 +41,7 @@ export class SourcesController {
         if (!this.api.exists(id))
             throw new NotFoundException();
 
-        this.api.store(id, {
+        this.api.write(id, {
             ... this.api.read(id),
             ...updates
         });

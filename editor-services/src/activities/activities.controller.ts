@@ -1,19 +1,21 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
-import { ActivitiesService } from './activities.service';
 import { v4 as uuid4 } from 'uuid';
+import { ActivitiesService } from '../activities-service/activities.service';
+import { CompilerService } from '../compiler-service/compiler.service';
 
 @Controller('activities')
 export class ActivitiesController {
 
     constructor(
         private api: ActivitiesService,
+        private transform: CompilerService,
     ) { }
 
     @Get()
     index() {
         return this.api.list().map((id: any) => {
             const activity = this.api.read(id);
-            return { id, name: activity.name };
+            return { id, name: activity.name, stat: this.transform.stat(id) };
         });
     }
 

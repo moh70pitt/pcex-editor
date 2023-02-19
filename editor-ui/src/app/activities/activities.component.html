@@ -33,7 +33,16 @@
                             {{_activity.name || '[name not set]'}}
                         </span>
                     </div>
-                    <button pButton type="button" icon="pi pi-times"
+                    <!-- {{ _activity.stat | json}} -->
+                    <button pButton *ngIf="_activity.stat" type="button"
+                        label="{{ _activity.stat.lastTimeModified | date:'medium' }}" icon="pi pi-download"
+                        title="Download compiled.json"
+                        class="p-button-text p-button-rounded p-button-sm p-button-success download-btn"
+                        (click)="download(_activity)"></button>
+                    <button pButton type="button" icon="pi pi-refresh" title="(Re)Compile"
+                        class="p-button-text p-button-rounded p-button-sm reload-btn"
+                        (click)="compile(_activity)"></button>
+                    <button pButton type="button" icon="pi pi-times" title="Remove"
                         class="p-button-text p-button-rounded p-button-sm p-button-danger remove-btn"
                         (click)="remove(_activity)"></button>
                 </div>

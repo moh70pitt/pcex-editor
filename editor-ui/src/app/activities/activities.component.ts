@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivitiesService } from '../activities.service';
+import { CompilerService } from '../compiler.service';
 import { SourcesService } from '../sources.service';
 
 @Component({
@@ -14,7 +15,8 @@ export class ActivitiesComponent implements OnInit {
   activity: any;
 
   constructor(
-    private api: ActivitiesService
+    private api: ActivitiesService,
+    private compiler: CompilerService,
   ) { }
 
   ngOnInit(): void {
@@ -31,6 +33,17 @@ export class ActivitiesComponent implements OnInit {
       (activities: any) => this.activities = activities,
       (error: any) => console.log(error)
     );
+  }
+
+  download(activity: any) {
+    this.compiler.download(activity.id);
+  }
+
+  compile(activity: any) {
+    this.compiler.compile(activity.id).subscribe(
+      (resp: any) => this.reload(),
+      (error: any) => console.log(error)
+    )
   }
 
   remove(activity: any) {

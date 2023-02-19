@@ -21,6 +21,7 @@ export class EditorComponent implements OnInit {
     folding: false,
     glyphMargin: true,
     trimAutoWhitespace: false,
+    tabSize: 4,
   };
 
   distEditorOptions = {
@@ -60,9 +61,9 @@ export class EditorComponent implements OnInit {
     const params: any = this.route.snapshot.params;
     this.api.read(params.id).subscribe(
       (source: any) => {
-        this.srcEditorOptions.language = source.language;
         this.model = source;
         this.updateTitle();
+        this.changeLang();
       },
       (error: any) => console.log(error)
     );
@@ -191,10 +192,24 @@ export class EditorComponent implements OnInit {
     )
   }
 
-  changeLang($event: any) {
-    this.srcEditorOptions.language = $event.value;
-    this.distEditorOptions.language = $event.value;
-    this.jsonViewerOptions.language = $event.value;
+  changeLang() {
+    let filename = this.model.filename || '.java';
+    let index = filename.lastIndexOf('.');
+    if (index < 0) {
+      index = filename.length - 1;
+      filename += '.java';
+    }
+    const ext = filename.substring(index);
+    const map: any = { '.java': 'JAVA', '.py': 'PYTHON' };
+
+    this.model.filename = filename;
+    this.model.language = map[ext];
+
+    const editorLang = this.model.language.toLowerCase();
+
+    this.srcEditorOptions.language = editorLang;
+    this.distEditorOptions.language = editorLang;
+    this.jsonViewerOptions.language = editorLang;
 
     this.langSet = false;
     setTimeout(() => this.langSet = true, 0);
